@@ -50,8 +50,8 @@ class AppointmentController extends Controller
 
         if (!$this->isAvailable($validated)) {
             return redirect()->back()
-                ->withErrors(['error' => 'not available'])
-                ->with('error', 'not available');
+                ->withErrors(['available' => 'not available'])
+                ->with('available', 'not available');
         }
         Appointment::create([
             'title' => $validated['title'],
@@ -77,9 +77,10 @@ class AppointmentController extends Controller
     {
 
         $appointments = Appointment::where('status','reserved')->get();
+        $today = Carbon::now()->format('Y-m-d');
 
-        return $appointments->every(function (Appointment $appointment) use ($appointmentToVerify) {
-            return $appointment->start_date_time != $appointmentToVerify['start_date_time'];
+        return $appointments->every(function (Appointment $appointment) use ($appointmentToVerify, $today) {
+            return $appointment->start_date_time != $appointmentToVerify['start_date_time'] && $appointmentToVerify['start_date_time'] > $today;
         });
 
 
