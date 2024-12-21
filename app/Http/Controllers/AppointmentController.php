@@ -80,7 +80,7 @@ class AppointmentController extends Controller
         $today = Carbon::now()->format('Y-m-d');
 
         return $appointments->every(function (Appointment $appointment) use ($appointmentToVerify, $today) {
-            return $appointment->start_date_time != $appointmentToVerify['start_date_time'] || $appointmentToVerify['start_date_time'] > $today;
+            return $appointment->start_date_time != $appointmentToVerify['start_date_time'] && $appointmentToVerify['start_date_time'] > $today;
         });
 
 
