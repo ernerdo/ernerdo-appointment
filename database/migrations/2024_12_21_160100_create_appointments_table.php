@@ -10,9 +10,9 @@ return new class extends Migration {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->date('date');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->dateTime('start_date_time');
+            $table->dateTime('end_date_time');
+            $table->string('title');
             $table->enum('status',['reserved','cancelled'])->default('reserved');
             $table->timestamps();
             $table->softDeletes();

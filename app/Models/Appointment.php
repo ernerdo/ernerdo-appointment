@@ -12,11 +12,18 @@ class Appointment extends Model
 
     protected $fillable = [
         'user_id',
-        'date',
-        'start_time',
-        'end_time',
+        'start_date_time',
+        'end_date_time',
         'status',
+        'title'
     ];
+//    protected function casts(): array
+//    {
+//        return [
+//            'start_date_time' => 'datetime',
+//            'end_date_time' => 'datetime',
+//        ];
+//    }
 
     public function user(): BelongsTo
     {

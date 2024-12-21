@@ -35,10 +35,13 @@ export default function Index({appointments}) {
                                         #
                                     </th>
                                     <th scope="col" className="px-6 py-3">
-                                        Date
+                                        Title
                                     </th>
                                     <th scope="col" className="px-6 py-3">
-                                        Time
+                                        Init
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Start
                                     </th>
                                     <th scope="col" className="px-6 py-3">
                                         Status
@@ -53,8 +56,9 @@ export default function Index({appointments}) {
                                     appointments.map((appointment,index) =>
                                         <tr key={appointment.id}>
                                             <td className="px-6 py-4">{index + 1}</td>
-                                            <td className="px-6 py-4">{appointment.date}</td>
-                                            <td className="px-6 py-4">{appointment.start_time + ' - ' + appointment.end_time}</td>
+                                            <td className="px-6 py-4">{appointment.title}</td>
+                                            <td className="px-6 py-4">{appointment.start_date_time}</td>
+                                            <td className="px-6 py-4">{appointment.end_date_time}</td>
                                             <td className="px-6 py-4">{appointment.status}</td>
                                             <td className="px-6 py-4"><CancelAppointment
                                                 appointmentId={appointment.id}/></td>

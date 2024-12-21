@@ -6,6 +6,7 @@ use App\Http\Requests\AppointmentStoreRequest;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
@@ -24,7 +25,19 @@ class AppointmentController extends Controller
 
     public function create()
     {
-        return Inertia::render('Appointment/Create');
+        $appointments = Appointment::where('status', 'reserved')->get();
+        $mapAppointments = $appointments->map(function ($appointment) {
+            return [
+                'id' => $appointment->id,
+                'title' => $appointment->title,
+                'start' => $appointment->start_date_time,
+                'end' => $appointment->end_date_time
+            ];
+        });
+
+        return Inertia::render('Appointment/Create',[
+            'appointments' => $mapAppointments
+        ]);
     }
 
     /**
@@ -35,21 +48,19 @@ class AppointmentController extends Controller
 
         $validated = $request->validated();
 
-
-        if (!$this->isAvailable($validated)) {
-            return redirect()->back()
-                ->withErrors(['error' => 'test'])
-                ->with('error', 'test');
-        }
-
+//        if (!$this->isAvailable($validated)) {
+//            return redirect()->back()
+//                ->withErrors(['error' => 'test'])
+//                ->with('error', 'test');
+//        }
         Appointment::create([
+            'title' => $validated['title'],
             'user_id' => auth()->user()->id,
-            'date' => $validated->date,
-            'stat_time' => $validated->stat_time,
-            'end_time' => $validated->end_time,
+            'start_date_time' => Carbon::create($validated['start_date_time'])->format('Y-m-d H:i:s'),
+            'end_date_time' => Carbon::create($validated['end_date_time'])->format('Y-m-d H:i:s'),
         ]);
 
-        return Redirect::route('appointments.index');
+        return Redirect::route('appointment.index');
     }
 
     /**
