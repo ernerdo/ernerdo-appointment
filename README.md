@@ -13,6 +13,7 @@
 - cd ernerdo-appointment
 - ./vendor/bin/sail up
 - ./vendor/bin/sail artisan migrate
+- ./vendor/bin/sail npm install
 
 ## About Laravel
 
