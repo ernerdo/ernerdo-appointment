@@ -7,10 +7,12 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import { Calendar, dayjsLocalizer } from 'react-big-calendar'
 import dayjs from 'dayjs';
 import {useCallback, useState} from "react";
+import timezone from 'dayjs/plugin/timezone'
+dayjs.extend(timezone)
 
 
 export default function Create({appointments}) {
-    const localizer = dayjsLocalizer(dayjs)
+    const djLocalizer = dayjsLocalizer(dayjs)
     const minDay = new Date()
     const maxDay = new Date()
     const {post,data,setData,processing,errors} = useForm({
@@ -21,13 +23,13 @@ export default function Create({appointments}) {
 
     const [view, setView] = useState('week')
     const onView = useCallback((newView) => setView(newView), [setView])
-    
-    const [myEvents, setEvents] = useState(appointments.map((appoinment) => {
+
+    const [myEvents, setEvents] = useState(appointments.map((appointment) => {
         return {
-            id: appoinment.id,
-            title: appoinment.title,
-            start: new Date(dayjs(appoinment.start)),
-            end: new Date(dayjs(appoinment.end))
+            id: appointment.id,
+            title: appointment.title,
+            start: new Date(dayjs(appointment.start)),
+            end: new Date(dayjs(appointment.end))
         };
     }))
     const handleSelectSlot = useCallback(
@@ -64,7 +66,7 @@ export default function Create({appointments}) {
                             <div>
                                 <Calendar
                                     dayLayoutAlgorithm='no-overlap'
-                                    localizer={localizer}
+                                    localizer={djLocalizer}
                                     events={myEvents}
                                     startAccessor="start"
                                     endAccessor="end"

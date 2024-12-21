@@ -3,7 +3,6 @@ import {Head, Link} from '@inertiajs/react';
 import CancelAppointment from "@/Pages/Appointment/Partials/CancelAppointment.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
-
 export default function Index({appointments}) {
 
     return (
@@ -57,8 +56,8 @@ export default function Index({appointments}) {
                                         <tr key={appointment.id}>
                                             <td className="px-6 py-4">{index + 1}</td>
                                             <td className="px-6 py-4">{appointment.title}</td>
-                                            <td className="px-6 py-4">{appointment.start_date_time}</td>
-                                            <td className="px-6 py-4">{appointment.end_date_time}</td>
+                                            <td className="px-6 py-4">{new Date(appointment.start_date_time).toLocaleString()}</td>
+                                            <td className="px-6 py-4">{new Date(appointment.end_date_time).toLocaleString()}</td>
                                             <td className="px-6 py-4">{appointment.status}</td>
                                             <td className="px-6 py-4"><CancelAppointment
                                                 appointmentId={appointment.id}/></td>

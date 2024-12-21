@@ -48,11 +48,11 @@ class AppointmentController extends Controller
 
         $validated = $request->validated();
 
-//        if (!$this->isAvailable($validated)) {
-//            return redirect()->back()
-//                ->withErrors(['error' => 'test'])
-//                ->with('error', 'test');
-//        }
+        if (!$this->isAvailable($validated)) {
+            return redirect()->back()
+                ->withErrors(['error' => 'not available'])
+                ->with('error', 'not available');
+        }
         Appointment::create([
             'title' => $validated['title'],
             'user_id' => auth()->user()->id,
@@ -75,8 +75,13 @@ class AppointmentController extends Controller
 
     public function isAvailable($appointmentToVerify)
     {
-        return false;
-//        $appointments = Appointment::where('status','reserved')->get();
+
+        $appointments = Appointment::where('status','reserved')->get();
+
+        return $appointments->every(function (Appointment $appointment) use ($appointmentToVerify) {
+            return $appointment->start_date_time != $appointmentToVerify['start_date_time'];
+        });
+
 
     }
 }
