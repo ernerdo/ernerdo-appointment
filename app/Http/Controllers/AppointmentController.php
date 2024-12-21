@@ -34,10 +34,19 @@ class AppointmentController extends Controller
     {
 
         $validated = $request->validated();
-        $appointment = Appointment::create([
+
+
+        if (!$this->isAvailable($validated)) {
+            return redirect()->back()
+                ->withErrors(['error' => 'test'])
+                ->with('error', 'test');
+        }
+
+        Appointment::create([
             'user_id' => auth()->user()->id,
-            'date' => $request->date,
-            'time' => $request->time,
+            'date' => $validated->date,
+            'stat_time' => $validated->stat_time,
+            'end_time' => $validated->end_time,
         ]);
 
         return Redirect::route('appointments.index');
@@ -49,6 +58,14 @@ class AppointmentController extends Controller
     public function cancel(Appointment $appointment)
     {
         $appointment->update(['status' => 'cancelled']);
+
+    }
+
+
+    public function isAvailable($appointmentToVerify)
+    {
+        return false;
+//        $appointments = Appointment::where('status','reserved')->get();
 
     }
 }
